@@ -1,0 +1,69 @@
+spring:
+  application:
+    name: easycode-api
+  datasource:
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    hikari:
+      maximum-pool-size: ${DB_POOL_SIZE:10}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: true
+  servlet:
+    multipart:
+      enabled: false
+
+server:
+  port: ${PORT:8080}
+  forward-headers-strategy: framework
+  error:
+    include-message: never
+    include-stacktrace: never
+
+app:
+  base-url: ${APP_BASE_URL:http://localhost:5173}
+  support-email: ${SUPPORT_EMAIL:hello@easycode.dev}
+  cors-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:4173}
+  jwt:
+    secret: ${JWT_SECRET}
+    issuer: easycode-api
+    access-ttl-seconds: ${JWT_ACCESS_TTL:900}
+    refresh-ttl-seconds: ${JWT_REFRESH_TTL:2592000}
+    cookie-name: ec_rt
+    cookie-secure: ${JWT_COOKIE_SECURE:true}
+    cookie-same-site: ${JWT_COOKIE_SAMESITE:None}
+    cookie-domain: ${JWT_COOKIE_DOMAIN:}
+  invite:
+    ttl-hours: ${INVITE_TTL_HOURS:168}
+  reset:
+    ttl-minutes: ${RESET_TTL_MINUTES:60}
+  r2:
+    account-id: ${R2_ACCOUNT_ID:}
+    access-key-id: ${R2_ACCESS_KEY_ID:}
+    secret-access-key: ${R2_SECRET_ACCESS_KEY:}
+    bucket: ${R2_BUCKET:easycode-client-assets}
+    upload-url-ttl-minutes: 15
+    download-url-ttl-minutes: 60
+    max-upload-bytes: ${R2_MAX_UPLOAD_BYTES:52428800}
+  resend:
+    api-key: ${RESEND_API_KEY:}
+    from: ${RESEND_FROM:EasyCode <hello@easycode.dev>}
+    enabled: ${RESEND_ENABLED:true}
+  stripe:
+    secret-key: ${STRIPE_SECRET_KEY:}
+    webhook-secret: ${STRIPE_WEBHOOK_SECRET:}
+    currency: usd
+
+logging:
+  level:
+    com.easycode.api: ${LOG_LEVEL:INFO}
