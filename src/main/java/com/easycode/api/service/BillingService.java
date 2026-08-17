@@ -36,6 +36,8 @@ import java.util.Map;
 import java.util.UUID;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -96,8 +98,7 @@ public class BillingService {
 
     @Transactional(readOnly = true)
     public List<Invoice> allRecent() {
-        return invoices.findAll(org.springframework.data.domain.Sort.by(
-                org.springframework.data.domain.Sort.Direction.DESC, "createdAt"));
+        return invoices.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
     }
 
     @Transactional(readOnly = true)
@@ -255,7 +256,7 @@ public class BillingService {
         } catch (StripeException e) {
             log.error("Stripe PaymentIntent failed for invoice {}", invoice.getNumber(), e);
             throw new ApiException(
-                    org.springframework.http.HttpStatus.BAD_GATEWAY,
+                    HttpStatus.BAD_GATEWAY,
                     "stripe_error",
                     "We couldn't reach the payment processor. Try again in a moment.");
         }
@@ -275,7 +276,7 @@ public class BillingService {
         } catch (StripeException e) {
             log.error("Stripe SetupIntent failed for org {}", orgId, e);
             throw new ApiException(
-                    org.springframework.http.HttpStatus.BAD_GATEWAY,
+                    HttpStatus.BAD_GATEWAY,
                     "stripe_error",
                     "We couldn't reach the payment processor. Try again in a moment.");
         }
@@ -331,7 +332,7 @@ public class BillingService {
         } catch (StripeException e) {
             log.error("Stripe subscription failed for org {}", orgId, e);
             throw new ApiException(
-                    org.springframework.http.HttpStatus.BAD_GATEWAY,
+                    HttpStatus.BAD_GATEWAY,
                     "stripe_error",
                     "We couldn't start that plan. Try again in a moment.");
         }
