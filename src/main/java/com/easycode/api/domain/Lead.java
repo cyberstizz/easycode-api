@@ -44,6 +44,10 @@ public class Lead {
     @Column(name = "next_action_at")
     private Instant nextActionAt;
 
+    /** Why you're calling them back. Without it, nextActionAt is a date with no context. */
+    @Column(name = "next_action_note", columnDefinition = "text")
+    private String nextActionNote;
+
     @Column(name = "est_value_cents")
     private Integer estValueCents;
 
