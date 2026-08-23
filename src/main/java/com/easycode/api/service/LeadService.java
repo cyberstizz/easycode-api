@@ -13,7 +13,10 @@ import com.easycode.api.error.ApiException;
 import com.easycode.api.repo.LeadActivityRepository;
 import com.easycode.api.repo.LeadRepository;
 import com.easycode.api.security.AuthPrincipal;
+import com.easycode.api.web.dto.LeadDtos;
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -85,6 +88,15 @@ public class LeadService {
         return activities.findByLeadIdOrderByOccurredAtDesc(leadId);
     }
 
+    /** Call counts for a lead, used by the detail view. */
+    @Transactional(readOnly = true)
+    public int[] callCounts(UUID leadId) {
+        return new int[] {
+            (int) activities.countByLeadId(leadId),
+            (int) activities.countByLeadIdAndOutcome(leadId, ActivityOutcome.CONNECTED),
+        };
+    }
+
     @Transactional
     public Lead create(AuthPrincipal actor, Lead draft) {
         if (draft.getOwnerId() == null) {
@@ -106,6 +118,7 @@ public class LeadService {
         if (patch.getStatus() != null) lead.setStatus(patch.getStatus());
         if (patch.getOwnerId() != null) lead.setOwnerId(patch.getOwnerId());
         if (patch.getNextActionAt() != null) lead.setNextActionAt(patch.getNextActionAt());
+        if (patch.getNextActionNote() != null) lead.setNextActionNote(patch.getNextActionNote());
         if (patch.getEstValueCents() != null) lead.setEstValueCents(patch.getEstValueCents());
         if (patch.getOfferedTier() != null) lead.setOfferedTier(patch.getOfferedTier());
         if (patch.getLostReason() != null) lead.setLostReason(patch.getLostReason());
@@ -115,7 +128,13 @@ public class LeadService {
         return saved;
     }
 
-    /** Call disposition. Logging one always moves the next-action date so nothing goes cold. */
+    /**
+     * Call disposition.
+     *
+     * <p>Logging one always moves the next-action date, so nothing goes cold. The
+     * log-a-call screen won't save without a next action; this keeps the same
+     * guarantee for any other caller.
+     */
     @Transactional
     public LeadActivity logActivity(
             AuthPrincipal actor,
@@ -123,7 +142,12 @@ public class LeadService {
             ActivityType type,
             ActivityOutcome outcome,
             String body,
-            Instant nextActionAt) {
+            Integer durationSeconds,
+            List<String> objectionTags,
+            DealTier rungOffered,
+            Instant nextActionAt,
+            String nextActionNote,
+            LeadStatus status) {
 
         Lead lead = get(leadId);
 
@@ -133,20 +157,117 @@ public class LeadService {
         activity.setType(type == null ? ActivityType.CALL : type);
         activity.setOutcome(outcome);
         activity.setBody(body);
+        activity.setDurationSeconds(durationSeconds);
+        activity.setObjectionTags(
+                objectionTags == null ? new String[0] : objectionTags.toArray(String[]::new));
+        activity.setRungOffered(rungOffered);
         LeadActivity saved = activities.save(activity);
 
         if (nextActionAt != null) {
             lead.setNextActionAt(nextActionAt);
         }
-        if (lead.getStatus() == LeadStatus.NEW && outcome == ActivityOutcome.CONNECTED) {
-            lead.setStatus(LeadStatus.CONTACTED);
+        if (nextActionNote != null) {
+            lead.setNextActionNote(nextActionNote);
         }
-        if (outcome == ActivityOutcome.NOT_INTERESTED) {
-            lead.setStatus(LeadStatus.LOST);
-            lead.setLostReason(body);
+
+        // The latest rung on the table becomes the lead's current offer. The
+        // per-call history stays on the activity, which is what shows whether
+        // we're dropping to the floor too early.
+        if (rungOffered != null) {
+            lead.setOfferedTier(rungOffered);
         }
+
+        // An explicit status from the caller wins. The inferences below only run
+        // for callers that don't set one.
+        if (status != null) {
+            lead.setStatus(status);
+        } else {
+            if (lead.getStatus() == LeadStatus.NEW && outcome == ActivityOutcome.CONNECTED) {
+                lead.setStatus(LeadStatus.CONTACTED);
+            }
+            if (rungOffered != null && lead.getStatus() == LeadStatus.CONTACTED) {
+                lead.setStatus(LeadStatus.PITCHED);
+            }
+            if (outcome == ActivityOutcome.NOT_INTERESTED) {
+                lead.setStatus(LeadStatus.LOST);
+                lead.setLostReason(body);
+            }
+        }
+
         leads.save(lead);
+        audit.record(actor, "lead.activity", "lead", leadId,
+                Map.of("outcome", outcome == null ? "NONE" : outcome.name(),
+                       "status", lead.getStatus().name()));
         return saved;
+    }
+
+    /**
+     * The numbers under the pipeline board.
+     *
+     * <p>Every one of these is only computable because calls are logged with
+     * structure rather than free text. That's the argument for the discipline,
+     * made visible in the UI.
+     */
+    @Transactional(readOnly = true)
+    public LeadDtos.PipelineStats pipelineStats(UUID ownerId) {
+        Instant startOfDay = Instant.now().truncatedTo(ChronoUnit.DAYS);
+        Instant weekAgo = Instant.now().minus(7, ChronoUnit.DAYS);
+        Instant monthStart = Instant.now().minus(30, ChronoUnit.DAYS);
+
+        List<Lead> all = leads.findAll().stream()
+                .filter(l -> ownerId == null || ownerId.equals(l.getOwnerId()))
+                .toList();
+
+        long closedThisMonth = all.stream()
+                .filter(l -> l.getStatus() == LeadStatus.WON)
+                .filter(l -> l.getUpdatedAt() != null && l.getUpdatedAt().isAfter(monthStart))
+                .count();
+
+        // Two-year value of every live lead, at the rung currently on the table.
+        // Nothing offered yet is valued at the preferred deal, since that's what
+        // we lead with.
+        long pipelineValue = all.stream()
+                .filter(l -> l.getStatus() != LeadStatus.WON && l.getStatus() != LeadStatus.LOST)
+                .mapToLong(l -> twoYearValueCents(l.getOfferedTier()))
+                .sum();
+
+        List<LeadDtos.ObjectionCount> objections = new ArrayList<>();
+        for (Object[] row : activities.objectionCountsForLostLeads()) {
+            objections.add(new LeadDtos.ObjectionCount((String) row[0], ((Number) row[1]).longValue()));
+        }
+
+        List<LeadDtos.RungConversion> rungs = new ArrayList<>();
+        for (Object[] row : activities.rungConversion()) {
+            rungs.add(new LeadDtos.RungConversion(
+                    DealTier.valueOf((String) row[0]),
+                    ((Number) row[1]).longValue(),
+                    ((Number) row[2]).longValue()));
+        }
+
+        long wonAllTime = all.stream().filter(l -> l.getStatus() == LeadStatus.WON).count();
+        long dialsAllTime = activities.dialsSince(Instant.EPOCH, ownerId);
+        Integer dialsPerClose = wonAllTime == 0 ? null : (int) (dialsAllTime / wonAllTime);
+
+        return new LeadDtos.PipelineStats(
+                (int) activities.dialsSince(startOfDay, ownerId),
+                60,
+                (int) activities.dialsSince(weekAgo, ownerId),
+                (int) closedThisMonth,
+                pipelineValue,
+                objections,
+                rungs,
+                dialsPerClose);
+    }
+
+    /** The ladder's economics. Preferred is worth more than Standard — that's the point of it. */
+    private long twoYearValueCents(DealTier tier) {
+        if (tier == null) return 140_000L; // assume preferred, what we lead with
+        return switch (tier) {
+            case STANDARD -> 120_000L; // $1,200, no contract
+            case PREFERRED -> 140_000L; // $200 + $50 x 24
+            case FLOOR -> 130_000L; // $100 + $50 x 24
+            case SPECIAL -> 0L; // comped
+        };
     }
 
     /** Lead → client in one move: org, contact, project with the six-stage rail, and the portal invite. */
