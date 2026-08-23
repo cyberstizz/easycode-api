@@ -102,8 +102,8 @@ public class DashboardService {
                 projects.countByStatus(com.easycode.api.domain.enums.ProjectStatus.ACTIVE),
                 leads.countByStatus(LeadStatus.NEW)
                         + leads.countByStatus(LeadStatus.CONTACTED)
-                        + leads.countByStatus(LeadStatus.QUALIFIED)
-                        + leads.countByStatus(LeadStatus.PROPOSAL),
+                        + leads.countByStatus(LeadStatus.PITCHED)
+                        + leads.countByStatus(LeadStatus.NEGOTIATING),
                 queue.stream().limit(25).toList(),
                 callList.stream().limit(25).toList());
     }
