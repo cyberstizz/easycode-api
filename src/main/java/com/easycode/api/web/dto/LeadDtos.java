@@ -52,6 +52,10 @@ public final class LeadDtos {
             DealTier dealTier,
             Integer contractCents,
             Integer depositCents,
+            /** Kickoff. Defaults to now if the caller doesn't set one. */
+            Instant startedAt,
+            /** The date the client sees on their tracker from day one. */
+            Instant estLaunchAt,
             Boolean sendInvite) {}
 
     public record LeadView(
