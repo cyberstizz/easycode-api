@@ -1,6 +1,7 @@
 package com.easycode.api.web;
 
 import com.easycode.api.domain.Lead;
+import com.easycode.api.domain.enums.DealTier;
 import com.easycode.api.domain.enums.LeadStatus;
 import com.easycode.api.security.AuthPrincipal;
 import com.easycode.api.service.LeadService;
@@ -28,35 +29,57 @@ public class LeadController {
         this.leads = leads;
     }
 
-    /** The kanban board: every column, in ladder order. */
+    /**
+     * The kanban board.
+     *
+     * <p>Returns {@code {columns: {STATUS: [...]}, stats: {...}}} rather than a
+     * bare map. The envelope leaves room for the pipeline's insight cards without
+     * a second round trip, and it means every list response in the API has a
+     * predictable outer shape.
+     */
     @GetMapping("/board")
-    public Map<String, List<LeadDtos.LeadView>> board(@RequestParam(required = false) UUID ownerId) {
+    public Map<String, Object> board(@RequestParam(required = false) UUID ownerId) {
         Map<LeadStatus, List<Lead>> grouped = leads.all().stream()
                 .filter(l -> ownerId == null || ownerId.equals(l.getOwnerId()))
                 .collect(Collectors.groupingBy(Lead::getStatus));
 
-        Map<String, List<LeadDtos.LeadView>> board = new LinkedHashMap<>();
+        Map<String, List<LeadDtos.LeadView>> columns = new LinkedHashMap<>();
         for (LeadStatus status : LeadStatus.values()) {
-            board.put(
+            columns.put(
                     status.name(),
                     grouped.getOrDefault(status, List.of()).stream().map(LeadDtos.LeadView::of).toList());
         }
-        return board;
+
+        return Map.of("columns", columns, "stats", leads.pipelineStats(ownerId));
     }
 
     /** Today's call list — anything whose next action has come due. */
     @GetMapping("/due")
-    public List<LeadDtos.LeadView> due(@RequestParam(required = false) UUID ownerId) {
-        return leads.dueNow(ownerId).stream().map(LeadDtos.LeadView::of).toList();
+    public Map<String, Object> due(@RequestParam(required = false) UUID ownerId) {
+        return Map.of(
+                "items", leads.dueNow(ownerId).stream().map(LeadDtos.LeadView::of).toList(),
+                "stats", leads.pipelineStats(ownerId));
+    }
+
+    /** Flat list, mostly for search and pickers. */
+    @GetMapping
+    public Map<String, Object> list(@RequestParam(required = false) UUID ownerId) {
+        List<LeadDtos.LeadView> items = leads.all().stream()
+                .filter(l -> ownerId == null || ownerId.equals(l.getOwnerId()))
+                .map(LeadDtos.LeadView::of)
+                .toList();
+        return Map.of("items", items, "total", items.size());
     }
 
     @GetMapping("/{id}")
     public Map<String, Object> get(@PathVariable UUID id) {
+        int[] counts = leads.callCounts(id);
         return Map.of(
-                "lead", LeadDtos.LeadView.of(leads.get(id)),
+                "lead", LeadDtos.LeadView.of(leads.get(id), counts[0], counts[1]),
                 "activities", leads.activitiesFor(id).stream().map(LeadDtos.ActivityView::of).toList());
     }
 
+    /** Returns the created lead directly, so the caller can navigate to it. */
     @PostMapping
     public LeadDtos.LeadView create(
             @AuthenticationPrincipal AuthPrincipal me, @Valid @RequestBody LeadDtos.LeadUpsert body) {
@@ -75,7 +98,12 @@ public class LeadController {
         return LeadDtos.LeadView.of(leads.update(me, id, patch));
     }
 
-    /** Call disposition, logged against the lead. */
+    /**
+     * Call disposition, logged against the lead.
+     *
+     * <p>Carries the objection tags, connect time, and rung offered — the fields
+     * the pipeline's insight cards are built from.
+     */
     @PostMapping("/{id}/activities")
     public LeadDtos.ActivityView logActivity(
             @AuthenticationPrincipal AuthPrincipal me,
@@ -83,7 +111,10 @@ public class LeadController {
             @RequestBody LeadDtos.ActivityCreate body) {
 
         return LeadDtos.ActivityView.of(leads.logActivity(
-                me, id, body.type(), body.outcome(), body.body(), body.nextActionAt()));
+                me, id,
+                body.type(), body.outcome(), body.body(),
+                body.durationSeconds(), body.objectionTags(), body.rungOffered(),
+                body.nextActionAt(), body.nextActionNote(), body.status()));
     }
 
     /** Creates the org, the contact, the project with its six stages, and sends the portal invite. */
@@ -116,6 +147,7 @@ public class LeadController {
         }
         lead.setOwnerId(body.ownerId());
         lead.setNextActionAt(body.nextActionAt());
+        lead.setNextActionNote(body.nextActionNote());
         lead.setEstValueCents(body.estValueCents());
         lead.setOfferedTier(body.offeredTier());
         lead.setLostReason(body.lostReason());
