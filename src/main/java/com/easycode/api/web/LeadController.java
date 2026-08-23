@@ -128,6 +128,7 @@ public class LeadController {
                 body.orgName(), body.contactName(), body.contactEmail(), body.contactPhone(),
                 body.projectName(), body.projectType(), body.dealTier(),
                 body.contractCents(), body.depositCents(),
+                body.startedAt(), body.estLaunchAt(),
                 body.sendInvite() == null || body.sendInvite()));
 
         return Map.of(
