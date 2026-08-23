@@ -56,6 +56,8 @@ public class LeadService {
             DealTier dealTier,
             Integer contractCents,
             Integer depositCents,
+            Instant startedAt,
+            Instant estLaunchAt,
             boolean sendInvite) {}
 
     public record Converted(Organization org, Contact contact, Project project) {}
@@ -304,6 +306,11 @@ public class LeadService {
         projectDraft.setType(req.projectType());
         projectDraft.setContractCents(req.contractCents());
         projectDraft.setDepositCents(req.depositCents());
+        // Kickoff and launch come off the convert screen. The launch date is the
+        // first thing the client sees on their tracker, so it matters that it's
+        // the one you actually agreed to on the phone.
+        projectDraft.setStartedAt(req.startedAt() != null ? req.startedAt() : Instant.now());
+        projectDraft.setEstLaunchAt(req.estLaunchAt());
         Project project = projectService.create(actor, projectDraft);
 
         if (req.sendInvite()) {
