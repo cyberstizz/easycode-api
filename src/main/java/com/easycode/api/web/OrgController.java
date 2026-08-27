@@ -3,6 +3,7 @@ package com.easycode.api.web;
 import com.easycode.api.domain.Contact;
 import com.easycode.api.domain.Organization;
 import com.easycode.api.security.AuthPrincipal;
+import com.easycode.api.config.AppProperties;
 import com.easycode.api.service.AccessService;
 import com.easycode.api.service.OrgService;
 import com.easycode.api.web.dto.OrgDtos;
@@ -24,10 +25,12 @@ public class OrgController {
 
     private final OrgService orgs;
     private final AccessService access;
+    private final AppProperties props;
 
-    public OrgController(OrgService orgs, AccessService access) {
+    public OrgController(OrgService orgs, AccessService access, AppProperties props) {
         this.orgs = orgs;
         this.access = access;
+        this.props = props;
     }
 
     @GetMapping
@@ -88,13 +91,28 @@ public class OrgController {
         return OrgDtos.ContactView.of(orgs.addContact(me, id, draft));
     }
 
-    /** Replaces signup: this is how a client gets an account. */
+    /**
+     * Replaces signup: this is how a client gets an account.
+     *
+     * <p>When email sending is off, the accept URL comes back in the response so it
+     * can be delivered by hand. With Resend enabled the link is omitted — at that
+     * point the only copy lives in the client's inbox, which is the point.
+     */
     @PostMapping("/contacts/{contactId}/invite")
     public Map<String, Object> invite(
             @AuthenticationPrincipal AuthPrincipal me, @PathVariable UUID contactId) {
         access.requireStaff(me);
-        var invite = orgs.invite(me, contactId);
-        return Map.of("ok", true, "expiresAt", invite.getExpiresAt(), "email", invite.getEmail());
+        var issued = orgs.invite(me, contactId);
+
+        Map<String, Object> body = new java.util.LinkedHashMap<>();
+        body.put("ok", true);
+        body.put("email", issued.invite().getEmail());
+        body.put("expiresAt", issued.invite().getExpiresAt());
+        body.put("emailSent", props.getResend().isEnabled());
+        if (!props.getResend().isEnabled()) {
+            body.put("acceptUrl", props.getBaseUrl() + "/accept-invite?token=" + issued.rawToken());
+        }
+        return body;
     }
 
     private void apply(Organization org, OrgDtos.OrgUpsert body) {
