@@ -13,6 +13,19 @@ public class AppProperties {
     /** Where the SPA lives. Used to build invite / reset links. */
     private String baseUrl = "http://localhost:5173";
 
+    /**
+     * Trailing slashes are stripped on the way in.
+     *
+     * <p>A value of {@code https://site.app/} would otherwise produce
+     * {@code https://site.app//accept-invite}, and React Router does not treat
+     * {@code //accept-invite} as {@code /accept-invite} — every emailed link 404s.
+     * Normalising here fixes it once for invites, password resets, and every
+     * email template, rather than at each call site.
+     */
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl == null ? null : baseUrl.replaceAll("/+$", "");
+    }
+
     private String supportEmail = "hello@easycode.dev";
     private List<String> corsOrigins = List.of("http://localhost:5173");
 
