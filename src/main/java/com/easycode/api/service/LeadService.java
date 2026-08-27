@@ -60,7 +60,15 @@ public class LeadService {
             Instant estLaunchAt,
             boolean sendInvite) {}
 
-    public record Converted(Organization org, Contact contact, Project project) {}
+    /**
+     * The result of a conversion.
+     *
+     * <p>{@code invite} carries the issued invite when one was requested. Without it
+     * the raw token is created and immediately discarded, so the only copy of the
+     * accept link is the emailed one — which is useless while email is switched off.
+     */
+    public record Converted(
+            Organization org, Contact contact, Project project, OrgService.IssuedInvite invite) {}
 
     @Transactional(readOnly = true)
     public List<Lead> all() {
@@ -313,9 +321,8 @@ public class LeadService {
         projectDraft.setEstLaunchAt(req.estLaunchAt());
         Project project = projectService.create(actor, projectDraft);
 
-        if (req.sendInvite()) {
-            orgService.invite(actor, contact.getId());
-        }
+        OrgService.IssuedInvite invite =
+                req.sendInvite() ? orgService.invite(actor, contact.getId()) : null;
 
         lead.setOrgId(org.getId());
         lead.setStatus(LeadStatus.WON);
@@ -324,6 +331,6 @@ public class LeadService {
 
         audit.record(actor, "lead.convert", "lead", leadId,
                 Map.of("orgId", org.getId().toString(), "projectId", project.getId().toString()));
-        return new Converted(org, contact, project);
+        return new Converted(org, contact, project, invite);
     }
 }

@@ -1,5 +1,6 @@
 package com.easycode.api.web;
 
+import com.easycode.api.config.AppProperties;
 import com.easycode.api.domain.Lead;
 import com.easycode.api.domain.enums.DealTier;
 import com.easycode.api.domain.enums.LeadStatus;
@@ -24,9 +25,11 @@ import org.springframework.web.bind.annotation.*;
 public class LeadController {
 
     private final LeadService leads;
+    private final AppProperties props;
 
-    public LeadController(LeadService leads) {
+    public LeadController(LeadService leads, AppProperties props) {
         this.leads = leads;
+        this.props = props;
     }
 
     /**
@@ -131,10 +134,23 @@ public class LeadController {
                 body.startedAt(), body.estLaunchAt(),
                 body.sendInvite() == null || body.sendInvite()));
 
-        return Map.of(
-                "organization", OrgDtos.OrgView.summary(result.org()),
-                "contact", OrgDtos.ContactView.of(result.contact()),
-                "project", ProjectDtos.ProjectView.summary(result.project(), result.org().getName()));
+        Map<String, Object> out = new LinkedHashMap<>();
+        out.put("organization", OrgDtos.OrgView.summary(result.org()));
+        out.put("contact", OrgDtos.ContactView.of(result.contact()));
+        out.put("project", ProjectDtos.ProjectView.summary(result.project(), result.org().getName()));
+
+        // Same rule as the standalone invite endpoint: hand back the accept link
+        // while email is off, so the person converting can actually deliver it.
+        if (result.invite() != null) {
+            out.put("inviteEmail", result.invite().invite().getEmail());
+            out.put("inviteExpiresAt", result.invite().invite().getExpiresAt());
+            out.put("emailSent", props.getResend().isEnabled());
+            if (!props.getResend().isEnabled()) {
+                out.put("acceptUrl",
+                        props.getBaseUrl() + "/accept-invite?token=" + result.invite().rawToken());
+            }
+        }
+        return out;
     }
 
     private void apply(Lead lead, LeadDtos.LeadUpsert body) {
