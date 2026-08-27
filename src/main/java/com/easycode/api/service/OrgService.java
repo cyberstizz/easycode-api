@@ -104,8 +104,11 @@ public class OrgService {
      * The flow that replaces signup: admin invites a contact, Resend delivers the link,
      * the client picks their own password.
      */
+    /** The invite plus its raw token — the token is never persisted, only its hash. */
+    public record IssuedInvite(Invite invite, String rawToken) {}
+
     @Transactional
-    public Invite invite(AuthPrincipal actor, UUID contactId) {
+    public IssuedInvite invite(AuthPrincipal actor, UUID contactId) {
         Contact contact = contacts.findById(contactId).orElseThrow(() -> ApiException.notFound("Contact"));
         Organization org = get(contact.getOrgId());
 
@@ -126,6 +129,6 @@ public class OrgService {
 
         audit.record(actor, "contact.invite", "contact", contact.getId(),
                 Map.of("email", contact.getEmail()));
-        return saved;
+        return new IssuedInvite(saved, raw);
     }
 }
