@@ -211,6 +211,39 @@ public class AssetService {
         return assets.save(asset);
     }
 
+    /**
+     * Removes every stored object belonging to an org. The asset ROWS are not touched
+     * here — they go with the organization via the on-delete-cascade in V1__init.sql.
+     * This exists so the bytes in R2 don't outlive the rows that pointed at them.
+     *
+     * <p>Best effort by design: a failed object delete is logged and skipped rather than
+     * aborting the whole deletion. An orphaned object in a bucket you control is a smaller
+     * problem than a half-deleted client.
+     */
+    @Transactional(readOnly = true)
+    public int purgeOrgObjects(UUID orgId) {
+        if (!storageAvailable()) {
+            log.warn("R2 not configured — skipping object purge for org {}", orgId);
+            return 0;
+        }
+        int removed = 0;
+        for (Asset a : assets.findByOrgId(orgId)) {
+            if (a.getR2Key() == null) {
+                continue;
+            }
+            try {
+                r2().deleteObject(DeleteObjectRequest.builder()
+                        .bucket(props.getR2().getBucket())
+                        .key(a.getR2Key())
+                        .build());
+                removed++;
+            } catch (Exception e) {
+                log.error("R2 delete failed for key {} during org purge", a.getR2Key(), e);
+            }
+        }
+        return removed;
+    }
+
     @Transactional
     public void delete(AuthPrincipal me, Asset asset) {
         try {

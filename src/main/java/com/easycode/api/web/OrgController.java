@@ -5,6 +5,7 @@ import com.easycode.api.domain.Organization;
 import com.easycode.api.security.AuthPrincipal;
 import com.easycode.api.config.AppProperties;
 import com.easycode.api.service.AccessService;
+import com.easycode.api.service.OrgDeletionService;
 import com.easycode.api.service.OrgService;
 import com.easycode.api.web.dto.OrgDtos;
 import jakarta.validation.Valid;
@@ -24,11 +25,14 @@ import org.springframework.web.bind.annotation.*;
 public class OrgController {
 
     private final OrgService orgs;
+    private final OrgDeletionService deletion;
     private final AccessService access;
     private final AppProperties props;
 
-    public OrgController(OrgService orgs, AccessService access, AppProperties props) {
+    public OrgController(
+            OrgService orgs, OrgDeletionService deletion, AccessService access, AppProperties props) {
         this.orgs = orgs;
+        this.deletion = deletion;
         this.access = access;
         this.props = props;
     }
@@ -69,6 +73,44 @@ public class OrgController {
         Organization patch = new Organization();
         apply(patch, body);
         return OrgDtos.OrgView.of(orgs.update(me, id, patch), orgs.contactsFor(id));
+    }
+
+    /** Counts for the confirmation dialog, so the warning names real numbers. */
+    @GetMapping("/{id}/deletion-preview")
+    @PreAuthorize("hasRole('ADMIN')")
+    public OrgDeletionService.Preview deletionPreview(
+            @AuthenticationPrincipal AuthPrincipal me, @PathVariable UUID id) {
+        access.requireAdmin(me);
+        return deletion.preview(id);
+    }
+
+    /**
+     * POST rather than DELETE on purpose: this carries a body (the password and the typed
+     * name), and a DELETE-with-body has to survive Netlify's proxy hop to Railway intact.
+     * Not worth the risk on the one call that can't be undone.
+     */
+    @PostMapping("/{id}/delete")
+    @PreAuthorize("hasRole('ADMIN')")
+    public Map<String, Object> delete(
+            @AuthenticationPrincipal AuthPrincipal me,
+            @PathVariable UUID id,
+            @Valid @RequestBody OrgDtos.DeleteOrgRequest body) {
+
+        access.requireAdmin(me);
+        OrgDeletionService.Result out = deletion.delete(
+                me, id, body.password(), body.confirmName(), body.deleteLinkedLeads());
+
+        Map<String, Object> res = new java.util.LinkedHashMap<>();
+        res.put("ok", true);
+        res.put("name", out.name());
+        res.put("projects", out.projects());
+        res.put("requests", out.requests());
+        res.put("files", out.files());
+        res.put("invoices", out.invoices());
+        res.put("objectsRemoved", out.objectsRemoved());
+        res.put("leadsDeleted", out.leadsDeleted());
+        res.put("leadsDetached", out.leadsDetached());
+        return res;
     }
 
     @GetMapping("/{id}/contacts")

@@ -17,4 +17,9 @@ public interface AssetRepository extends JpaRepository<Asset, UUID> {
     List<Asset> findByRequestIdAndUploadStateOrderByCreatedAtAsc(UUID requestId, UploadState state);
 
     List<Asset> findTop10ByOrgIdAndUploadStateOrderByCreatedAtDesc(UUID orgId, UploadState state);
+
+    /** Every asset for an org, any upload state — used to purge R2 before an org is deleted. */
+    List<Asset> findByOrgId(UUID orgId);
+
+    long countByOrgId(UUID orgId);
 }

@@ -16,4 +16,6 @@ public interface UserRepository extends JpaRepository<UserAccount, UUID> {
     List<UserAccount> findByOrgId(UUID orgId);
 
     List<UserAccount> findByRoleIn(List<Role> roles);
+
+    long countByOrgId(UUID orgId);
 }

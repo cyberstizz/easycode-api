@@ -20,4 +20,6 @@ public interface RequestRepository
     List<ClientRequest> findByStatusInOrderByCreatedAtAsc(List<RequestStatus> statuses);
 
     long countByDueAtBeforeAndStatusIn(Instant cutoff, List<RequestStatus> statuses);
+
+    long countByOrgId(UUID orgId);
 }

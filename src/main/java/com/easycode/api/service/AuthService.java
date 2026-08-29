@@ -16,6 +16,7 @@ import com.easycode.api.repo.OrganizationRepository;
 import com.easycode.api.repo.PasswordResetRepository;
 import com.easycode.api.repo.RefreshTokenRepository;
 import com.easycode.api.repo.UserRepository;
+import com.easycode.api.security.AuthPrincipal;
 import com.easycode.api.security.JwtService;
 import com.easycode.api.security.Tokens;
 import java.time.Instant;
@@ -73,6 +74,26 @@ public class AuthService {
     public record Session(String accessToken, long expiresIn, String refreshToken, UserAccount user) {}
 
     public record InvitePreview(String email, String name, String orgName, boolean valid) {}
+
+    // --------------------------------------------------- password confirmation
+
+    /**
+     * Confirms the signed-in user really typed their own password. Gate for destructive
+     * actions. Deliberately not a login: no session is issued, lastLoginAt is untouched,
+     * and the failure is 401 so the frontend shows it against the password field rather
+     * than bouncing the user to the sign-in screen.
+     */
+    @Transactional(readOnly = true)
+    public void requireCurrentPassword(AuthPrincipal me, String password) {
+        if (password == null || password.isBlank()) {
+            throw ApiException.badRequest("Enter your password to confirm");
+        }
+        UserAccount user = users.findById(me.userId())
+                .orElseThrow(() -> ApiException.unauthorized("Sign in again"));
+        if (user.getPasswordHash() == null || !encoder.matches(password, user.getPasswordHash())) {
+            throw ApiException.unauthorized("That password isn't right");
+        }
+    }
 
     // ------------------------------------------------------------------ login
 

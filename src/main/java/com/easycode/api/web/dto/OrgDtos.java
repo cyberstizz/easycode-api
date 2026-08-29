@@ -31,6 +31,15 @@ public final class OrgDtos {
             String role,
             boolean isPrimary) {}
 
+    /**
+     * Deleting a client. `confirmName` must match the org's name — the id alone is not
+     * enough of a decision for something this irreversible.
+     */
+    public record DeleteOrgRequest(
+            @NotBlank String password,
+            @NotBlank String confirmName,
+            boolean deleteLinkedLeads) {}
+
     public record ContactView(
             UUID id, String name, String email, String phone, String role, boolean isPrimary, boolean hasLogin) {
         public static ContactView of(Contact c) {

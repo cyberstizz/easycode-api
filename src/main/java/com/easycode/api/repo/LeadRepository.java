@@ -17,4 +17,8 @@ public interface LeadRepository extends JpaRepository<Lead, UUID>, JpaSpecificat
     List<Lead> findByNextActionAtBeforeOrderByNextActionAtAsc(Instant before);
 
     long countByStatus(LeadStatus status);
+
+    List<Lead> findByOrgId(UUID orgId);
+
+    long countByOrgId(UUID orgId);
 }

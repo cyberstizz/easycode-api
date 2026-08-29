@@ -20,6 +20,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, UUID> {
 
     long countByStatus(InvoiceStatus status);
 
+    long countByOrgId(UUID orgId);
+
     @Query("select coalesce(sum(i.amountCents - i.amountPaidCents), 0) from Invoice i "
             + "where i.orgId = :orgId and i.status = com.easycode.api.domain.enums.InvoiceStatus.OPEN")
     long outstandingCentsForOrg(UUID orgId);

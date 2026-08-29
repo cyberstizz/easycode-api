@@ -15,4 +15,6 @@ public interface ProjectRepository extends JpaRepository<Project, UUID> {
     List<Project> findTop50ByOrderByUpdatedAtDesc();
 
     long countByStatus(ProjectStatus status);
+
+    long countByOrgId(UUID orgId);
 }
