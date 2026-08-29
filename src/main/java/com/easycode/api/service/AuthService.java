@@ -205,13 +205,28 @@ public class AuthService {
         Contact contact = contacts.findById(invite.getContactId())
                 .orElseThrow(() -> ApiException.badRequest("That invite is no longer valid"));
 
-        UserAccount user = users.findByEmailIgnoreCase(invite.getEmail()).orElseGet(UserAccount::new);
+        // Reusing a row by email is correct for a re-invite of the same client, and a
+        // takeover for anything else: without these two guards, inviting a contact whose
+        // address matches a staff account lets whoever holds the link overwrite that
+        // account's password and stamp an orgId onto it, while the ADMIN role survives.
+        UserAccount existing = users.findByEmailIgnoreCase(invite.getEmail()).orElse(null);
+        if (existing != null && existing.getRole() != null && existing.getRole() != Role.CLIENT) {
+            throw ApiException.conflict(
+                    "That address already belongs to a staff account. Invite the client on a different email.");
+        }
+        if (existing != null
+                && existing.getOrgId() != null
+                && !existing.getOrgId().equals(contact.getOrgId())) {
+            throw ApiException.conflict("That address already belongs to a different client");
+        }
+
+        UserAccount user = existing != null ? existing : new UserAccount();
         user.setEmail(normalize(invite.getEmail()));
         user.setName(name != null && !name.isBlank() ? name.trim() : contact.getName());
         user.setOrgId(contact.getOrgId());
-        if (user.getRole() == null) {
-            user.setRole(Role.CLIENT);
-        }
+        // Safe to set unconditionally now — the guards above proved this row is either
+        // brand new or already a CLIENT of this same org.
+        user.setRole(Role.CLIENT);
         user.setPasswordHash(encoder.encode(password));
         user.setStatus(UserStatus.ACTIVE);
         user.setLastLoginAt(Instant.now());
