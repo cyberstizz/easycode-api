@@ -101,6 +101,13 @@ public class LeadController {
         return LeadDtos.LeadView.of(leads.update(me, id, patch));
     }
 
+    /** Only for leads that never converted. See LeadService.delete for why. */
+    @DeleteMapping("/{id}")
+    public Map<String, Object> delete(@AuthenticationPrincipal AuthPrincipal me, @PathVariable UUID id) {
+        leads.delete(me, id);
+        return Map.of("ok", true);
+    }
+
     /**
      * Call disposition, logged against the lead.
      *
