@@ -139,6 +139,28 @@ public class LeadService {
     }
 
     /**
+     * Removes a lead that never became a client. Activities go with it via cascade.
+     *
+     * <p>A WON lead is refused: it is attached to an organization and is the only record
+     * of how that deal was closed. Delete the client instead and choose whether the lead
+     * goes with it — that path exists and is gated properly.
+     */
+    @Transactional
+    public void delete(AuthPrincipal actor, UUID id) {
+        Lead lead = get(id);
+        if (lead.getStatus() == LeadStatus.WON || lead.getOrgId() != null) {
+            throw ApiException.conflict(
+                    "This lead was converted into a client. Delete the client instead — the lead can go with it.");
+        }
+        Map<String, String> detail = new java.util.LinkedHashMap<>();
+        detail.put("businessName", lead.getBusinessName() == null ? "" : lead.getBusinessName());
+        detail.put("email", lead.getEmail() == null ? "" : lead.getEmail());
+        detail.put("status", lead.getStatus().name());
+        audit.record(actor, "lead.delete", "lead", id, detail);
+        leads.delete(lead);
+    }
+
+    /**
      * Call disposition.
      *
      * <p>Logging one always moves the next-action date, so nothing goes cold. The
