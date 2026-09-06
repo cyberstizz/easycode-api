@@ -1,0 +1,1569 @@
+{
+  "templates": [
+    {
+      "projectType": "WEB",
+      "label": "Web application",
+      "contentHash": "1da6aa3ec20c870d",
+      "items": [
+        {
+          "stage": "DISCOVERY",
+          "position": 1,
+          "title": "Proposal signed and deposit cleared before any work starts",
+          "guidance": "Not after the mockup. The deposit is what makes the project real.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 2,
+          "title": "Kickoff call held and recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 3,
+          "title": "Scope written back to the client in one paragraph",
+          "guidance": "they can read in thirty seconds, confirmed in writing",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 4,
+          "title": "Out of scope written down explicitly",
+          "guidance": "— the things they might assume are included and aren't. Prevents more disputes than the contract does.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 5,
+          "title": "Page list agreed, with a number on it",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 6,
+          "title": "Brand assets gathered",
+          "guidance": "logo source files (not a PNG off Instagram), existing fonts with licences, colour values",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 7,
+          "title": "Content owner named and given a deadline",
+          "guidance": "Who writes the copy, who supplies photos. Late client content is the number one cause of a stalled build — agree now what happens if it doesn't arrive.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 8,
+          "title": "Photography source decided",
+          "guidance": "Their own photos, licensed stock, or AI-generated. If AI-generated, agree it now and note it — some clients care, and a few industries have disclosure expectations.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 9,
+          "title": "Three reference sites they like, one they don't, and the reason for each",
+          "guidance": "in their words, captured verbatim. These go into the design brief almost unchanged, so a vague answer here costs you a design round.",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 10,
+          "title": "Success measure agreed",
+          "guidance": "— booked calls, orders, or credibility. This decides what the homepage is for.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 11,
+          "title": "Domain",
+          "guidance": "does it exist, who owns it, where is it registered",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 12,
+          "title": "Existing site audited for URLs worth preserving (see redirects at Launch)",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 13,
+          "title": "Legal pages needed",
+          "guidance": "privacy, terms, cookie notice",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 14,
+          "title": "Third-party integrations named",
+          "guidance": "booking, payments, mailing list, CRM",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 15,
+          "title": "Accounts model chosen — A or B",
+          "guidance": "(see 00-accounts-and-handoff.md)",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 16,
+          "title": "Rung and monthly agreed; first invoice sent",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 1,
+          "title": "Sitemap agreed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 2,
+          "title": "Art direction decided before the first mockup, in one written sentence",
+          "guidance": "What this site is: \"warm, editorial, photography-led,\" or \"dense, technical, mono-heavy,\" or \"loud and cheap-feeling on purpose, because it's a discount tyre shop.\" Without this you get the default, and the default is what everyone else's AI-designed site looks like.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 3,
+          "title": "Typeface pair chosen and licence verified for commercial use",
+          "guidance": ", including in a logo if it's going there. Open Font License and Google Fonts are safe; confirm rather than assume.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 4,
+          "title": "One distinctive element chosen",
+          "guidance": "— the thing a visitor would describe to someone else afterwards. An oversized numeral, a duotone treatment, an unusual grid, a tracker rail. One. Sites without one are forgettable; sites with four are a mess.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 5,
+          "title": "Design brief written for the model and saved to the project",
+          "guidance": "Art direction, the reference sites in the client's words, the real content, brand colours, audience, success measure. This is a project artifact now — it's what lets another agent pick up the work, and what lets you regenerate a page in a month without starting over.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 6,
+          "title": "Homepage designed in conversation and iterated to a version you'd defend",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 7,
+          "title": "Real content in the mockup — their words, their photos",
+          "guidance": "The model will happily produce plausible filler that reads like real copy, which hides every layout problem until it's expensive. Stricter now than in the Figma days, not looser.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 8,
+          "title": "Remaining page templates designed (you need patterns, not every page)",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 9,
+          "title": "Mobile checked at 360 and 414 during design, not after",
+          "guidance": "You're designing in a browser — there's no excuse for finding this later.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 10,
+          "title": "Empty, loading, and error states designed for anything dynamic",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 11,
+          "title": "Contrast checked against WCAG AA",
+          "guidance": "Models pick colours that look good and fail contrast. Check every text-on-colour pair.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 12,
+          "title": "Mockup deployed to a Netlify preview URL",
+          "guidance": "",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 13,
+          "title": "Preview link posted as the Design stage update, with a sentence saying plainly that it's a design to react to, not the finished site",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 14,
+          "title": "Loom walkthrough recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 15,
+          "title": "Written approval received before promotion to a real codebase",
+          "guidance": "\"Looks good\" in the portal thread counts and is timestamped.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 1,
+          "title": "Repo created; README explains how to run it in under five commands",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 2,
+          "title": "Vite + React scaffolded, routing in place",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 3,
+          "title": "Design tokens extracted from the approved mockup into CSS variables first",
+          "guidance": "This inverts the old order — the mockup is the source now and the token file is derived from it. Do it before building components or you'll hardcode the same near-greys in fifteen places.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 4,
+          "title": "Mockup promoted to components, not pasted in",
+          "guidance": "A single HTML file that renders correctly is a prototype. Shared header, footer, cards, buttons and sections as real components is a codebase. This is the step most likely to get skipped and the most expensive to skip.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 5,
+          "title": "Component inventory built before pages are assembled",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 6,
+          "title": "All pages built to the approved design",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 7,
+          "title": "Responsive verified at 360, 414, 768, 1280, 1920",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 8,
+          "title": "Backend decision made against a rule, not a mood",
+          "guidance": "Supabase alone if it's reads, auth and simple writes. Add Spring Boot when there's business logic that must not live in the client, a third-party secret that can't reach the browser, or multi-tenant access rules. If you can't name which of the three applies, you don't need the backend.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 9,
+          "title": "Database schema written and migrated",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 10,
+          "title": "Row Level Security enabled on every table",
+          "guidance": "if the frontend talks to Supabase directly — or the frontend doesn't talk to Supabase at all",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 11,
+          "title": "Forms wired end to end, with a named destination for submissions",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 12,
+          "title": "Spam protection on every public form",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 13,
+          "title": "Media on R2 with the bucket CORS policy set",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 14,
+          "title": "SEO",
+          "guidance": "unique title and description per page, Open Graph image, sitemap.xml, robots.txt",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 15,
+          "title": "Favicon and app icons at every required size",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 16,
+          "title": "404 page that matches the design",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 17,
+          "title": "Analytics installed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 18,
+          "title": "Lighthouse ≥ 90 on performance and accessibility",
+          "guidance": ", on throttled mobile, not on your laptop",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 19,
+          "title": "Images compressed and correctly sized; no 4MB hero photo",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 20,
+          "title": "Netlify deploy previews working on every push",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 1,
+          "title": "Preview URL sent with the stage update",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 2,
+          "title": "Walked through on a real phone",
+          "guidance": ", not a browser device emulator",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 3,
+          "title": "Tested in Safari, Chrome and Firefox",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 4,
+          "title": "Every link clicked; no 404s, no localhost, no placeholder",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 5,
+          "title": "Every form submitted and the submission confirmed received",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 6,
+          "title": "Copy proofread by someone who didn't write it",
+          "guidance": "— and specifically checked for anything the model invented: a fake testimonial, a made-up statistic, a service they don't offer, a founding year that isn't theirs. This is a real failure mode and it's embarrassing in a way a layout bug isn't.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 7,
+          "title": "Loom walkthrough recorded for the client",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 8,
+          "title": "Review rounds capped and stated",
+          "guidance": "— two included, further rounds are a change order. Say it at Discovery, enforce it here.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 9,
+          "title": "Change orders raised for anything out of scope, priced, approved before it's built",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 10,
+          "title": "Client sign-off received in writing",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 1,
+          "title": "DNS pointed; propagation confirmed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 2,
+          "title": "SSL issued and forcing HTTPS",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 3,
+          "title": "301 redirects from every old URL that had traffic",
+          "guidance": "Skipping this silently deletes their search ranking, and they notice in month two and blame the new site.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 4,
+          "title": "www and apex both resolve to one canonical host",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 5,
+          "title": "Search Console verified, sitemap submitted",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 6,
+          "title": "Analytics confirmed receiving real traffic",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 7,
+          "title": "Backup taken and a restore actually tested once",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 8,
+          "title": "Account ownership verified or transferred",
+          "guidance": "— full pass through 00-accounts-and-handoff.md",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 9,
+          "title": "Credentials handed over through the vault, not chat",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 10,
+          "title": "Ownership sheet delivered",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 11,
+          "title": "Runbook delivered",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 12,
+          "title": "Design brief archived with the project",
+          "guidance": "In twelve months, when they want a fifth page that matches, this is what makes it a one-hour job instead of a redesign.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 13,
+          "title": "Client training Loom recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 14,
+          "title": "Final balance invoiced",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 15,
+          "title": "Review or referral asked for within 48 hours",
+          "guidance": ", while it's the best they've ever felt about you",
+          "emphasis": true
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 1,
+          "title": "Uptime monitoring active, alerting to you, not to them",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 2,
+          "title": "Dependency and security updates applied monthly",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 3,
+          "title": "Backup restore tested quarterly",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 4,
+          "title": "Analytics summary sent monthly",
+          "guidance": "three numbers and one sentence",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 5,
+          "title": "Content change requests answered within the SLA for their rung",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 6,
+          "title": "Domain and hosting renewals diarised 30 days ahead",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 7,
+          "title": "Check-in call every quarter",
+          "guidance": "This is where the next project comes from, and it's the cheapest sales activity you have.",
+          "emphasis": true
+        }
+      ]
+    },
+    {
+      "projectType": "MOBILE",
+      "label": "Mobile application",
+      "contentHash": "7651bcb82bc2a9bc",
+      "items": [
+        {
+          "stage": "DISCOVERY",
+          "position": 1,
+          "title": "Proposal signed, deposit cleared",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 2,
+          "title": "Platforms decided: iOS, Android, or both",
+          "guidance": "Both is not twice the work but it is not the same work either — price it deliberately.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 3,
+          "title": "Apple Developer Program enrolment started on day one",
+          "guidance": "$99/year, client's account, client's card. An individual account is approved in days. An organization account needs a D-U-N-S number, which can take 1–2 weeks on its own, sometimes longer. If they want the company name on the listing, start this before you design anything.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 4,
+          "title": "Google Play Developer account created",
+          "guidance": "$25 one-time, client's account. New personal developer accounts face additional testing requirements before public release — check the current rules and build the timeline around them rather than discovering them at submission.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 5,
+          "title": "App name checked for availability on both stores",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 6,
+          "title": "Offline behaviour decided",
+          "guidance": "What works with no signal, what shows instead. Answering this late reshapes the data layer.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 7,
+          "title": "Push notifications",
+          "guidance": "needed or not, and what triggers them",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 8,
+          "title": "Accounts and login",
+          "guidance": "required, optional, or none",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 9,
+          "title": "Anything sold in-app identified",
+          "guidance": "Digital goods must use Apple's in-app purchase and lose 15–30%. Physical goods and services may use Stripe. Getting this wrong is a rejected submission and a repriced project.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 10,
+          "title": "Data collected listed, for the privacy questionnaires",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 11,
+          "title": "Minimum OS versions agreed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 12,
+          "title": "Device matrix for testing agreed",
+          "guidance": "at minimum one small iPhone, one large Android",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 1,
+          "title": "Designed against platform conventions, not one layout for both",
+          "guidance": "Navigation, back behaviour and share sheets differ. A model will happily give you one design for both — ask it not to.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 2,
+          "title": "Safe areas handled",
+          "guidance": "notch, dynamic island, Android gesture bar",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 3,
+          "title": "Thumb reach considered",
+          "guidance": "Primary actions in the bottom third. This is the single most common miss when a design is judged on a desktop screen.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 4,
+          "title": "App icon designed at full resolution",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 5,
+          "title": "Splash screen designed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 6,
+          "title": "Store screenshots designed as a deliverable",
+          "guidance": "Five or six per platform at required sizes. These sell the app and are always rushed at the end — design them now, while the art direction is fresh.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 7,
+          "title": "Empty, loading, error and no-connection states designed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 8,
+          "title": "Tap targets no smaller than 44pt",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 9,
+          "title": "Dark mode decided",
+          "guidance": "supported or explicitly not",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 10,
+          "title": "Design brief saved to the project",
+          "guidance": ", same as web",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 11,
+          "title": "First build on a physical device before design sign-off",
+          "guidance": "Approving screenshots and discovering the feel later is the mobile version of approving a Figma file. Ship an early build, even an ugly one.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 12,
+          "title": "Loom walkthrough recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 13,
+          "title": "Written approval before the full build",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 1,
+          "title": "Expo project scaffolded; README covers running on both platforms",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 2,
+          "title": "Bundle identifier and package name fixed before the first build",
+          "guidance": "Changing them later means new store listings.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 3,
+          "title": "Navigation structure built",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 4,
+          "title": "Design tokens transcribed from the style guide",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 5,
+          "title": "Screens built to the approved design",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 6,
+          "title": "Data layer with offline handling as decided",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 7,
+          "title": "Supabase (or Spring Boot) wired; no secrets in the app bundle",
+          "guidance": "a mobile binary is readable, treat every key in it as public",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 8,
+          "title": "Deep links configured and tested from a cold start",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 9,
+          "title": "Push notifications implemented and tested on a real device",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 10,
+          "title": "Analytics and crash reporting installed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 11,
+          "title": "EAS build profiles configured",
+          "guidance": "for development, preview, and production",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 12,
+          "title": "Signing credentials generated and stored in the client's accounts",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 13,
+          "title": "OTA update policy decided and written down",
+          "guidance": "What you may ship without review, what needs a store submission.",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 14,
+          "title": "Permissions requested in context, with a reason string that reads like a sentence",
+          "guidance": "vague permission strings get rejected",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 1,
+          "title": "Internal build distributed via TestFlight and Play internal testing",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 2,
+          "title": "Tested on physical devices, both platforms",
+          "guidance": "Simulators do not surface performance, camera, or push behaviour.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 3,
+          "title": "Cold start, background, resume, and kill tested",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 4,
+          "title": "Airplane mode behaviour verified",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 5,
+          "title": "Client installed the test build themselves and used it",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 6,
+          "title": "Crash-free for a full week of testing before submission",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 7,
+          "title": "Store listing written",
+          "guidance": "title, subtitle, description, keywords",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 8,
+          "title": "Screenshots exported at every required size",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 9,
+          "title": "Privacy questionnaires completed",
+          "guidance": "— Apple privacy nutrition labels and Google Play Data safety. They must match what the app actually does.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 10,
+          "title": "Age rating completed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 11,
+          "title": "Support URL and privacy policy URL live and reachable",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 12,
+          "title": "Loom walkthrough recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 13,
+          "title": "Client sign-off in writing",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 1,
+          "title": "Submitted with a buffer",
+          "guidance": "Review is usually a day or two and occasionally a week. Never promise a launch date that assumes first-pass approval.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 2,
+          "title": "Rejection is normal — budget one round",
+          "guidance": "Read the reason, fix, resubmit.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 3,
+          "title": "Released to production on both stores",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 4,
+          "title": "Store listings verified live and correct",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 5,
+          "title": "Analytics and crash reporting confirmed receiving from production",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 6,
+          "title": "Account ownership verified",
+          "guidance": "— Apple and Google accounts in the client's name, you as a delegated member",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 7,
+          "title": "Signing credentials documented in the vault; loss of an Android signing key means the app can never be updated — write down where it lives",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 8,
+          "title": "Ownership sheet, runbook, and training Loom delivered",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 9,
+          "title": "Final balance invoiced",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 10,
+          "title": "Review or referral asked for",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 1,
+          "title": "Annual Apple renewal diarised",
+          "guidance": "A lapsed enrolment removes the app from the store.",
+          "emphasis": true
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 2,
+          "title": "OS version compatibility checked ahead of each major iOS/Android release",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 3,
+          "title": "Expo SDK upgraded on a schedule, not when something breaks",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 4,
+          "title": "Crash reports reviewed monthly",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 5,
+          "title": "Store reviews monitored and replied to",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 6,
+          "title": "Analytics summary sent monthly",
+          "guidance": "",
+          "emphasis": false
+        }
+      ]
+    },
+    {
+      "projectType": "AI_AGENT",
+      "label": "AI agent",
+      "contentHash": "104e77eb7ad900da",
+      "items": [
+        {
+          "stage": "DISCOVERY",
+          "position": 1,
+          "title": "Proposal signed, deposit cleared",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 2,
+          "title": "\"A day in the life\" written out",
+          "guidance": "The exact tasks, in order, with real examples of the inputs. Not \"manage social media\" — \"at 9am, read the content calendar sheet, draft three posts in the brand voice, queue them for approval.\"",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 3,
+          "title": "Every task sorted into one of three buckets",
+          "guidance": "fully autonomous, needs approval before acting, or never automated. Written down and signed off.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 4,
+          "title": "Blast radius named for each autonomous task",
+          "guidance": "If this runs wrong 100 times overnight, what's the worst outcome? Anything that can't be undone moves to the approval bucket.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 5,
+          "title": "Volume estimated",
+          "guidance": "messages, posts, calls, emails per day",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 6,
+          "title": "Channels chosen (WhatsApp, Telegram, Slack) and who is in them",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 7,
+          "title": "Human owner named on the client's side",
+          "guidance": "One person who approves queued actions and gets escalations. An agent with no owner is abandoned in six weeks.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 8,
+          "title": "Escalation path defined",
+          "guidance": "what the agent does when it isn't sure",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 9,
+          "title": "Model chosen, and the API key is the client's own, billed to their card",
+          "guidance": "You are not reselling tokens and absorbing a runaway loop.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 10,
+          "title": "Monthly cost ceiling agreed in writing",
+          "guidance": ", with a hard cap configured",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 11,
+          "title": "Hosting decided",
+          "guidance": "their VPS or yours, and who owns it",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 12,
+          "title": "Data handling agreed",
+          "guidance": "what the agent reads, what it stores, how long",
+          "emphasis": false
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 13,
+          "title": "Compliance reviewed for the specific use case",
+          "guidance": "- Phone agents — call recording consent law varies by state and by the location of the person being called. Some states require all-party consent. Get the disclosure script written and approved before building anything. - Email — CAN-SPAM applies to bulk sending: real physical address, working unsubscribe. - Social — automated posting is against the terms of several platforms depending on how it's done. An account ban is a real outcome. Use official APIs and scheduling endpoints, never UI automation on a client's account.",
+          "emphasis": true
+        },
+        {
+          "stage": "DISCOVERY",
+          "position": 14,
+          "title": "Rung and monthly agreed",
+          "guidance": "agents need more ongoing attention than websites do; price the maintenance, don't inherit it",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 1,
+          "title": "System prompt drafted and reviewed by the client",
+          "guidance": "This is the job description. They should read it and recognise their business.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 2,
+          "title": "Brand voice captured with real examples of good and bad output",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 3,
+          "title": "Refusal rules written",
+          "guidance": "what the agent must never say or do",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 4,
+          "title": "Approval queue flow designed",
+          "guidance": "Where a drafted action waits, how the owner approves it, what happens if nobody looks for two days.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 5,
+          "title": "Skill list drafted",
+          "guidance": "which come from ClawHub, which must be custom",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 6,
+          "title": "Tool permissions mapped, least privilege",
+          "guidance": "Each skill gets the narrowest scope that works. Read-only wherever reading is enough.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 7,
+          "title": "Schedule designed",
+          "guidance": "what runs on the heartbeat and how often",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 8,
+          "title": "Escalation message templates written",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 9,
+          "title": "Kill switch designed",
+          "guidance": "One command or one message that stops everything, documented on one page, given to the client.",
+          "emphasis": true
+        },
+        {
+          "stage": "DESIGN",
+          "position": 10,
+          "title": "Success measures agreed",
+          "guidance": "what \"working\" looks like in numbers",
+          "emphasis": false
+        },
+        {
+          "stage": "DESIGN",
+          "position": 11,
+          "title": "Client sign-off on behaviour before build",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 1,
+          "title": "VPS provisioned, hardened, SSH keys only, firewall on",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 2,
+          "title": "Gateway installed and running as a managed service that restarts on boot",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 3,
+          "title": "TLS terminated; the Gateway is not exposed unencrypted",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 4,
+          "title": "Channels connected and a test message round-tripped",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 5,
+          "title": "Model API key installed from the client's account, with usage alerting on",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 6,
+          "title": "Cost cap enforced at the provider",
+          "guidance": ", not just intended",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 7,
+          "title": "Skills installed from ClawHub, pinned to versions",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 8,
+          "title": "Custom skills written, each with a written contract",
+          "guidance": "inputs, outputs, failure behaviour",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 9,
+          "title": "Tool permission cascade configured to the mapped scopes",
+          "guidance": ", and verified by trying an action that should be refused",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 10,
+          "title": "Credentials for every downstream tool created as scoped tokens on the client's own accounts",
+          "guidance": "never a shared password, never their main login",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 11,
+          "title": "Memory workspace configured; the workspace directory is version controlled so you can see what the agent learned and roll it back",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 12,
+          "title": "Retention rule implemented for anything sensitive",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 13,
+          "title": "Heartbeat schedule configured",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 14,
+          "title": "Every autonomous action logged with a timestamp, inputs, and outcome",
+          "guidance": "",
+          "emphasis": true
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 15,
+          "title": "Approval queue implemented and tested with a real approval and a real rejection",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 16,
+          "title": "Kill switch implemented and tested by actually using it",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 17,
+          "title": "Rate limiting on outbound actions, so a loop can't burn the account",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "DEVELOPMENT",
+          "position": 18,
+          "title": "Restart-safety verified",
+          "guidance": "reboot the box and confirm it comes back",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 1,
+          "title": "Dry-run week: the agent runs on the real schedule with real inputs and takes no external action — it only logs what it would have done",
+          "guidance": "This is the single most valuable item in this document. You will find things here that no amount of testing surfaces.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 2,
+          "title": "Dry-run log reviewed line by line with the client",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 3,
+          "title": "System prompt tuned against what the dry run revealed",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 4,
+          "title": "Adversarial pass",
+          "guidance": "deliberately send it confusing, hostile, and out-of-scope inputs. Confirm it escalates instead of improvising.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 5,
+          "title": "Confirm it refuses everything on the refusal list",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 6,
+          "title": "Cost measured over the dry-run week against the agreed ceiling",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 7,
+          "title": "Supervised live week: real actions, every one approved by a human first",
+          "guidance": "Nothing goes fully autonomous until a week of approvals looks boring.",
+          "emphasis": true
+        },
+        {
+          "stage": "REVIEW",
+          "position": 8,
+          "title": "Escalation tested end to end with the named owner",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 9,
+          "title": "Loom walkthrough recorded",
+          "guidance": "what it does, how to approve, how to stop it",
+          "emphasis": false
+        },
+        {
+          "stage": "REVIEW",
+          "position": 10,
+          "title": "Client sign-off in writing before autonomy is switched on",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 1,
+          "title": "Autonomy enabled one task at a time, not all at once",
+          "guidance": "Highest-volume lowest-risk task first.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 2,
+          "title": "Monitoring and alerting live",
+          "guidance": "failures and cost spikes reach you",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 3,
+          "title": "Runbook delivered",
+          "guidance": "what it does, the schedule, how to pause it, who to call",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 4,
+          "title": "Kill switch instructions given to the client on one page",
+          "guidance": "They must be able to stop it without you.",
+          "emphasis": true
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 5,
+          "title": "Ownership sheet delivered",
+          "guidance": "VPS, API keys, every connected account",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 6,
+          "title": "Client training session held, recorded",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 7,
+          "title": "Final balance invoiced",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "LAUNCH",
+          "position": 8,
+          "title": "Two-week checkpoint booked in the calendar now",
+          "guidance": "",
+          "emphasis": true
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 1,
+          "title": "Transcripts and action logs reviewed weekly for the first month",
+          "guidance": ", monthly after",
+          "emphasis": true
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 2,
+          "title": "Cost reviewed monthly against the ceiling",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 3,
+          "title": "Model and framework updates applied deliberately",
+          "guidance": "a model change can change behaviour; re-run part of the dry run after any upgrade",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 4,
+          "title": "Downstream tokens rotated on a schedule",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 5,
+          "title": "OS and dependency patching monthly",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 6,
+          "title": "Backup of the memory workspace verified",
+          "guidance": "",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 7,
+          "title": "Monthly summary to the client",
+          "guidance": "actions taken, escalations, cost, and one recommendation",
+          "emphasis": false
+        },
+        {
+          "stage": "MAINTENANCE",
+          "position": 8,
+          "title": "Quarterly review of whether the task buckets still make sense",
+          "guidance": "work that was approval-gated may have earned autonomy, and vice versa",
+          "emphasis": false
+        }
+      ]
+    }
+  ]
+}
+
+// ChecklistTemplate.java
+// api/domain/ChecklistTemplateItem.java
+// api/domain/ProjectChecklistItem.java
