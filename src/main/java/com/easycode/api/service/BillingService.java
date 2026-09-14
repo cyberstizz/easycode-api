@@ -235,6 +235,10 @@ public class BillingService {
             params.put("customer", customerId);
             params.put("description", "EasyCode " + invoice.getNumber());
             params.put("automatic_payment_methods", Map.of("enabled", true));
+            // Keep the card on the customer after this payment succeeds, so starting
+            // maintenance at launch reuses it instead of asking for it again. Saving is
+            // not subscribing: nothing recurs until startSubscription is called.
+            params.put("setup_future_usage", "off_session");
             params.put("metadata", Map.of(
                     "invoiceId", invoice.getId().toString(),
                     "invoiceNumber", invoice.getNumber(),
@@ -297,12 +301,20 @@ public class BillingService {
         try {
             String customerId = ensureCustomer(org);
 
-            if (paymentMethodId != null && !paymentMethodId.isBlank()) {
-                com.stripe.model.PaymentMethod method = com.stripe.model.PaymentMethod.retrieve(paymentMethodId);
-                method.attach(Map.of("customer", customerId));
-                Customer.retrieve(customerId)
-                        .update(Map.of("invoice_settings", Map.of("default_payment_method", paymentMethodId)));
+            if (paymentMethodId == null || paymentMethodId.isBlank()) {
+                // No card handed to us: use the one saved when the deposit was paid.
+                paymentMethodId = cardOnFile(customerId)
+                        .map(com.stripe.model.PaymentMethod::getId)
+                        .orElseThrow(() -> ApiException.badRequest(
+                                "There's no card on file yet. Pay an invoice or add a card first."));
             }
+
+            com.stripe.model.PaymentMethod method = com.stripe.model.PaymentMethod.retrieve(paymentMethodId);
+            if (method.getCustomer() == null) {
+                method.attach(Map.of("customer", customerId));
+            }
+            Customer.retrieve(customerId)
+                    .update(Map.of("invoice_settings", Map.of("default_payment_method", paymentMethodId)));
 
             Map<String, Object> params = new HashMap<>();
             params.put("customer", customerId);
@@ -311,9 +323,7 @@ public class BillingService {
                     "orgId", orgId.toString(),
                     "planId", planId.toString(),
                     "termMonths", termMonths == null ? "" : termMonths.toString()));
-            if (paymentMethodId != null && !paymentMethodId.isBlank()) {
-                params.put("default_payment_method", paymentMethodId);
-            }
+            params.put("default_payment_method", paymentMethodId);
 
             com.stripe.model.Subscription stripeSub = com.stripe.model.Subscription.create(params);
 
@@ -335,6 +345,38 @@ public class BillingService {
                     HttpStatus.BAD_GATEWAY,
                     "stripe_error",
                     "We couldn't start that plan. Try again in a moment.");
+        }
+    }
+
+    /** The customer's default card if one is set, else their most recently attached card. */
+    private java.util.Optional<com.stripe.model.PaymentMethod> cardOnFile(String customerId) throws StripeException {
+        Customer customer = Customer.retrieve(customerId);
+        Object def = customer.getInvoiceSettings() == null ? null : customer.getInvoiceSettings().getDefaultPaymentMethod();
+        if (def instanceof String id && !id.isBlank()) {
+            return java.util.Optional.of(com.stripe.model.PaymentMethod.retrieve(id));
+        }
+        var list = com.stripe.model.PaymentMethod.list(Map.of("customer", customerId, "type", "card", "limit", 1));
+        return list.getData().isEmpty() ? java.util.Optional.empty() : java.util.Optional.of(list.getData().get(0));
+    }
+
+    public record CardView(String brand, String last4, int expMonth, int expYear) {}
+
+    /** Null when the org has no Stripe customer yet or no card saved. Never throws to the caller. */
+    public CardView cardFor(UUID orgId) {
+        Organization org = orgs.findById(orgId).orElse(null);
+        if (org == null || org.getStripeCustomerId() == null || org.getStripeCustomerId().isBlank()) {
+            return null;
+        }
+        try {
+            return cardOnFile(org.getStripeCustomerId())
+                    .filter(pm -> pm.getCard() != null)
+                    .map(pm -> new CardView(
+                            pm.getCard().getBrand(), pm.getCard().getLast4(),
+                            pm.getCard().getExpMonth().intValue(), pm.getCard().getExpYear().intValue()))
+                    .orElse(null);
+        } catch (StripeException e) {
+            log.warn("Could not read card on file for org {}", orgId, e);
+            return null;
         }
     }
 

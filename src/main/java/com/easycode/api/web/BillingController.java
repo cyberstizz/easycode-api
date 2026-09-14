@@ -67,6 +67,18 @@ public class BillingController {
     }
 
     /** Collect a card in-app for the maintenance plan without charging it yet. */
+    /** Brand and last four of the saved card, or null. Lets the billing page say "Visa ····4242". */
+    @GetMapping("/billing/card")
+    public java.util.Map<String, Object> card(
+            @AuthenticationPrincipal AuthPrincipal me, @RequestParam(required = false) UUID orgId) {
+        UUID scoped = access.resolveOrgId(me, orgId);
+        access.requireOrg(me, scoped);
+        BillingService.CardView c = billing.cardFor(scoped);
+        java.util.Map<String, Object> out = new java.util.LinkedHashMap<>();
+        out.put("card", c);
+        return out;
+    }
+
     @PostMapping("/billing/setup-intent")
     public BillingDtos.IntentView setupIntent(
             @AuthenticationPrincipal AuthPrincipal me, @RequestParam(required = false) UUID orgId) {
