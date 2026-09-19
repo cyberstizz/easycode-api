@@ -37,6 +37,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class StripeWebhookService {
 
+    private final MaintenanceService maintenance;
+
     private static final Logger log = LoggerFactory.getLogger(StripeWebhookService.class);
 
     private final StripeEventRepository events;
@@ -54,7 +56,8 @@ public class StripeWebhookService {
             SubscriptionRepository subscriptions,
             OrganizationRepository orgs,
             AuditService audit,
-            AppProperties props) {
+            AppProperties props,
+            MaintenanceService maintenance) {
         this.events = events;
         this.payments = payments;
         this.invoices = invoices;
@@ -62,6 +65,7 @@ public class StripeWebhookService {
         this.orgs = orgs;
         this.audit = audit;
         this.props = props;
+        this.maintenance = maintenance;
     }
 
     @Transactional
@@ -224,6 +228,13 @@ public class StripeWebhookService {
                     }
                     subscriptions.save(sub);
                     log.info("Subscription {} is now {}", stripeSub.getId(), sub.getStatus());
+
+                    // Maintenance starts the moment the plan does. Idempotent and
+                    // self-silencing: an org that already has a rhythm keeps it, and a
+                    // failure here must never fail the webhook.
+                    if (com.easycode.api.domain.enums.SubscriptionStatus.ACTIVE == sub.getStatus()) {
+                        maintenance.startForOrgIfAbsent(sub.getOrgId());
+                    }
                 });
     }
 }
