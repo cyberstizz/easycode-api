@@ -8,6 +8,9 @@ import com.easycode.api.domain.enums.Role;
 import com.easycode.api.domain.enums.StageKey;
 import com.easycode.api.error.ApiException;
 import com.easycode.api.repo.ProjectStageRepository;
+import com.easycode.api.config.AppProperties;
+import com.easycode.api.repo.ProjectRepository;
+import com.easycode.api.repo.ContactRepository;
 import com.easycode.api.repo.StageMessageRepository;
 import com.easycode.api.repo.StageReadRepository;
 import com.easycode.api.repo.UserRepository;
@@ -44,16 +47,33 @@ public class StageMessageService {
             StageMessageRepository messages,
             StageReadRepository reads,
             UserRepository users,
-            AuditService audit) {
+            AuditService audit,
+            ContactRepository contacts,
+            ProjectRepository projects,
+            EmailService email,
+            AppProperties props) {
         this.access = access;
         this.stages = stages;
         this.messages = messages;
         this.reads = reads;
         this.users = users;
         this.audit = audit;
+        this.contacts = contacts;
+        this.projects = projects;
+        this.email = email;
+        this.props = props;
     }
 
+    private final ContactRepository contacts;
+    private final ProjectRepository projects;
+    private final EmailService email;
+    private final AppProperties props;
+
     public record Thread(UUID stageId, List<StageMessage> messages, Instant clientLastReadAt) {}
+
+    private Project project(AuthPrincipal me, UUID projectId) {
+        return access.project(me, projectId);
+    }
 
     private ProjectStage stage(AuthPrincipal me, UUID projectId, StageKey key) {
         Project project = access.project(me, projectId);
@@ -102,6 +122,23 @@ public class StageMessageService {
         StageMessage saved = messages.save(m);
 
         markRead(me, stage.getId());
+
+        // Tell the other side. Staff wrote it → every contact with a login on that org.
+        // Client wrote it → every admin and agent. The author never emails themselves.
+        String projectName = projects.findById(projectId).map(Project::getName).orElse("your project");
+        String excerpt = ProjectService.excerpt(saved.getBody());
+        if (me.isStaff()) {
+            String link = props.getBaseUrl() + "/portal/project";
+            contacts.findByOrgId(project(me, projectId).getOrgId()).stream()
+                    .filter(c -> c.getUserId() != null && c.getEmail() != null && !c.getUserId().equals(me.userId()))
+                    .forEach(c -> email.sendStageReply(c.getEmail(), saved.getAuthorName(), projectName, key.label(), excerpt, link));
+        } else {
+            String link = props.getBaseUrl() + "/admin/projects/" + projectId;
+            users.findByRoleIn(List.of(Role.ADMIN, Role.AGENT)).stream()
+                    .filter(u -> !u.getId().equals(me.userId()))
+                    .forEach(u -> email.sendStageReply(u.getEmail(), saved.getAuthorName(), projectName, key.label(), excerpt, link));
+        }
+
         audit.record(me, "stage.message", "project_stage", stage.getId(),
                 Map.of("stage", key.name(), "chars", String.valueOf(saved.getBody().length())));
         return saved;

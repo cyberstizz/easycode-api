@@ -7,6 +7,8 @@ import com.easycode.api.domain.enums.StageKey;
 import com.easycode.api.domain.enums.StageStatus;
 import com.easycode.api.error.ApiException;
 import com.easycode.api.repo.ProjectRepository;
+import com.easycode.api.config.AppProperties;
+import com.easycode.api.repo.ContactRepository;
 import com.easycode.api.repo.ProjectStageRepository;
 import com.easycode.api.security.AuthPrincipal;
 import java.time.Instant;
@@ -25,10 +27,23 @@ public class ProjectService {
     private final ProjectStageRepository stages;
     private final AuditService audit;
 
-    public ProjectService(ProjectRepository projects, ProjectStageRepository stages, AuditService audit) {
+    private final ContactRepository contacts;
+    private final EmailService email;
+    private final AppProperties props;
+
+    public ProjectService(
+            ProjectRepository projects,
+            ProjectStageRepository stages,
+            AuditService audit,
+            ContactRepository contacts,
+            EmailService email,
+            AppProperties props) {
         this.projects = projects;
         this.stages = stages;
         this.audit = audit;
+        this.contacts = contacts;
+        this.email = email;
+        this.props = props;
     }
 
     @Transactional(readOnly = true)
@@ -116,10 +131,25 @@ public class ProjectService {
         if (progressPct != null) {
             stage.setProgressPct((short) Math.max(0, Math.min(100, progressPct)));
         }
+        // Only a REAL change to the client-facing text is an update worth an email.
+        // Saving progress or an internal note with the same client text sends nothing.
+        String before = stage.getClientNote() == null ? "" : stage.getClientNote().trim();
+        boolean noteChanged = clientNote != null && !clientNote.trim().equals(before) && !clientNote.isBlank();
+
         if (clientNote != null) stage.setClientNote(clientNote);
         if (internalNote != null) stage.setInternalNote(internalNote);
 
         ProjectStage saved = stages.save(stage);
+
+        if (noteChanged) {
+            projects.findById(projectId).ifPresent(p -> {
+                String link = props.getBaseUrl() + "/portal/project";
+                String excerpt = excerpt(clientNote);
+                contacts.findByOrgId(p.getOrgId()).stream()
+                        .filter(c -> c.getUserId() != null && c.getEmail() != null)
+                        .forEach(c -> email.sendStageUpdate(c.getEmail(), p.getName(), key.label(), excerpt, link));
+            });
+        }
 
         if (status == StageStatus.ACTIVE) {
             projects.findById(projectId).ifPresent(p -> {
@@ -166,4 +196,12 @@ public class ProjectService {
                 Map.of("from", current.name(), "to", next.name()));
         return saved;
     }
+
+    /** First ~160 characters of the note as plain text, for the email preview. */
+    static String excerpt(String markdown) {
+        if (markdown == null) return "";
+        String t = markdown.replaceAll("(?m)^[#!*\\-\\d.)\\s]+", "").replaceAll("\\s+", " ").trim();
+        return t.length() > 160 ? t.substring(0, 157) + "…" : t;
+    }
+
 }

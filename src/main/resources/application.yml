@@ -32,7 +32,7 @@ server:
 
 app:
   base-url: ${APP_BASE_URL:http://localhost:5173}
-  support-email: ${SUPPORT_EMAIL:hello@easycode.dev}
+  support-email: ${SUPPORT_EMAIL:hello@easycodetechnology.com}
   cors-origins: ${CORS_ORIGINS:http://localhost:5173,http://localhost:4173}
   jwt:
     secret: ${JWT_SECRET}
@@ -57,7 +57,7 @@ app:
     max-upload-bytes: ${R2_MAX_UPLOAD_BYTES:52428800}
   resend:
     api-key: ${RESEND_API_KEY:}
-    from: ${RESEND_FROM:EasyCode <hello@easycode.dev>}
+    from: ${RESEND_FROM:EasyCode <hello@easycodetechnology.com>}
     enabled: ${RESEND_ENABLED:true}
   stripe:
     secret-key: ${STRIPE_SECRET_KEY:}

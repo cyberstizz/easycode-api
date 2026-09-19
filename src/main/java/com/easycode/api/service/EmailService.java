@@ -61,6 +61,37 @@ public class EmailService {
                         "View and pay", link, null));
     }
 
+    /** The developer wrote or rewrote the client-facing update on a stage. */
+    public void sendStageUpdate(String to, String projectName, String stageLabel, String excerpt, String link) {
+        send(to, "Update on " + projectName + " — " + stageLabel,
+                html(stageLabel + " update",
+                        excerpt == null || excerpt.isBlank() ? "There's a new update on your project."
+                                : "<em>" + escape(excerpt) + "</em>",
+                        "Read the update", link, "Reply in the portal and it lands with us right away."));
+    }
+
+    /** Someone replied in the thread under a stage — sent to the other side. */
+    public void sendStageReply(String to, String authorName, String projectName, String stageLabel, String excerpt, String link) {
+        send(to, authorName + " replied — " + projectName,
+                html("New reply on " + stageLabel,
+                        "<strong>" + escape(authorName) + "</strong> wrote: <em>" + escape(excerpt) + "</em>",
+                        "Open the conversation", link, null));
+    }
+
+    private static String escape(String s) {
+        return s == null ? "" : s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
+    }
+
+    /** A maintenance visit was completed. The client sees the report, never the schedule. */
+    public void sendMaintenanceReport(String to, String projectName, String excerpt, String link) {
+        send(to, "Maintenance completed — " + projectName,
+                html("Maintenance done",
+                        "We ran maintenance on <strong>" + escape(projectName) + "</strong>. "
+                                + "<em>" + escape(excerpt) + "</em>",
+                        "See the report", link,
+                        "Included in your monthly plan. Reply in the portal if anything needs a closer look."));
+    }
+
     public void send(String to, String subject, String html) {
         if (!props.getResend().isEnabled()) {
             log.info("[email disabled] to={} subject={}\n{}", to, subject, html);

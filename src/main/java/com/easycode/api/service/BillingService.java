@@ -169,7 +169,7 @@ public class BillingService {
         invoice.setSentAt(Instant.now());
         Invoice saved = invoices.save(invoice);
 
-        String link = props.getBaseUrl() + "/billing/invoices/" + invoice.getId();
+        String link = props.getBaseUrl() + "/portal/invoices/" + invoice.getId();
         contacts.findByOrgId(invoice.getOrgId()).stream()
                 .filter(Contact::isPrimaryContact)
                 .findFirst()

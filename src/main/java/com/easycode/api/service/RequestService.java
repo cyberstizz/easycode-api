@@ -224,7 +224,7 @@ public class RequestService {
         if (internal) {
             return;
         }
-        String link = props.getBaseUrl() + "/requests/" + request.getId();
+        String link = props.getBaseUrl() + "/portal/requests/" + request.getId();
         if (me.isStaff()) {
             contacts.findByOrgId(request.getOrgId()).stream()
                     .filter(c -> c.getUserId() != null)
