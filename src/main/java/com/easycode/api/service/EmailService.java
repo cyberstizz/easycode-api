@@ -78,10 +78,6 @@ public class EmailService {
                         "Open the conversation", link, null));
     }
 
-    private static String escape(String s) {
-        return s == null ? "" : s.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;");
-    }
-
     /** A maintenance visit was completed. The client sees the report, never the schedule. */
     public void sendMaintenanceReport(String to, String projectName, String excerpt, String link) {
         send(to, "Maintenance completed — " + projectName,
